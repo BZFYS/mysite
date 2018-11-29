@@ -8,7 +8,8 @@
         <div class="row">
             <div class="col-xs-12 col-md-9 col-sm-8">
                 <div class="panel panel-default">
-                  <div class="panel-heading">分类：{{ type_page.blog_type }}(一共有{{ page_of_blogs.paginator.count }}篇文章)<a href="{% url 'home' %}">查看全部博客</a></div>
+                    <div class="panel-heading">分类：{{ type_page.type_name }}(一共有{{ page_of_blogs.paginator.count }}篇文章)<a
+                            href="{% url 'home' %}">查看全部博客</a></div>
                       <div class="panel-body">
                           {% for content in page_of_blogs %}
                             <h3><a href={% url 'get_page' content.id %}>
@@ -63,7 +64,7 @@
                             {% endif %}
                         </li>
                     </ul>
-                        <p> 当前分类为【{{ type_page.blog_type_id }}】,
+                 <p> 当前分类为【{{ type_page.type_name }}】,
                             共有{{ page_of_blogs.paginator.count }}篇博客，
                             当前{{ page_of_blogs.number }}页,
                             共{{ page_of_blogs.paginator.num_pages }}页

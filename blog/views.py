@@ -56,7 +56,8 @@ def get_page(request,blog_page):
 
 #根据类型查找博客
 def get_type(request,blog_type):
-    type_page = get_object_or_404(Blog,pk=blog_type,is_delete=False)
+    type_page = get_object_or_404(BlogType, pk=blog_type)
+    print(type_page)
     blogs_list_all = Blog.objects.filter(blog_type_id=blog_type,is_delete=False)
     paginator = Paginator(blogs_list_all, settings.EACH_PAGE_BLOGS_NUMBER)  # 每10篇博客为一页
     page_number = request.GET.get('page', 1)  # 获取页码参数get请求参数,括号里面，前面是参数后面是默认值
