@@ -65,7 +65,5 @@ def get_type(request,blog_type):
     content['blog_types'] = BlogType.objects.all()
     return render_to_response('type_page.html',content)
 
-
-
 def index(request):
     return render_to_response('index.html')
