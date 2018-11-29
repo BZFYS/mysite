@@ -84,7 +84,6 @@ def get_type(request,blog_type):
         page_range.insert(0, 1)
     if page_range[-1] != paginator.num_pages:
         page_range.append(paginator.num_pages)
-
     content = {}
     content['type_page'] = type_page
     content['page_of_blogs'] = page_of_blogs
