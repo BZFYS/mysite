@@ -91,5 +91,6 @@ def get_type(request,blog_type):
     content['page_range'] = page_range
     return render_to_response('type_page.html',content)
 
+
 def index(request):
     return render_to_response('index.html')
