@@ -1,0 +1,23 @@
+/*无序列表中去·*/
+ul.blog-types{
+    list-style-type: none;
+}
+
+
+/*文章下面增加横线*/
+div.blog:not(:last-child){
+    margin-bottom: 2em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #eee;
+}
+div.paginator{
+    text-align: center;
+}
+
+div.blog h3{
+    margin-top: 0.5em;
+}
+/*分类与内容间距变小*/
+div.panel-body p.blog-info{
+    margin-bottom: 0em;
+}
