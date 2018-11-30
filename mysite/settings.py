@@ -81,11 +81,11 @@ DATABASES = {
         #引擎
         'ENGINE': 'django.db.backends.mysql',
         #数据库
-        'NAME': 'aliyun',
+        'NAME': 'tianke',
         #用户名
-        'USER': 'dc_tianke',
+        'USER': 'tianke',
         #密码
-        'PASSWORD': 'dwbI3doAoUj6a1IzRMv525M1aB1sjDI6',
+        'PASSWORD': 'tainke',
         #服务器
         'HOST': '192.168.10.70',
         #端口

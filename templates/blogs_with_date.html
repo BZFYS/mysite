@@ -1,36 +1,17 @@
-<!--启用扩展，引用base.hmtl-->
 {% extends 'base.html' %}
-<!--title块-->
 {% block title %}
-    网站首页
+    分类标签
 {% endblock %}
-
-<!--设置导航栏为选中-->
 {% block nav_blog_active %}active{% endblock %}
-
-<!--加载css文件-->
-{% load staticfiles %}
-{% block heard_extends %}
-    <link rel="stylesheet" href="{% static 'blog.css' %}">
-{% endblock %}
-
-
-<!--content块-->
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-md-9 col-sm-8">
                 <div class="panel panel-default">
-                    {#                不分页显示方式#}
-                    {#                  <div class="panel-heading">博客列表(共有{{ home_page|length }}篇博客)</div>#}
-                    <div class="panel-heading">博客列表</div>
-                    {#                分页显示方式#}
-
+                    <div class="panel-heading">月份：{{ blog_with_date }}(一共有{{ page_of_blogs.paginator.count }}篇文章)<a
+                            href="{% url 'home' %}">查看全部博客</a></div>
                     <div class="panel-body">
-                        {#                      不分页显示方式#}
-                        {#                          {% for content in home_page %}#}
-                        {#                      分页显示方式#}
-                        {% for content in page_of_blogs.object_list %}
+                        {% for content in page_of_blogs %}
                             <h3><a href={% url 'get_page' content.id %}>
                                 {{ content.title }}</a></h3>
                             <p class='blog-info'>
@@ -46,8 +27,6 @@
                         {% endfor %}
                     </div>
                 </div>
-
-
                 <div class="paginator">
                     {#                上一页#}
                     <ul class="pagination">
@@ -69,9 +48,9 @@
                             {% else %}
                                 {#                                如果是省略号不没有超链接#}
                                 {% if page_num == '...' %}
-                                    <li ><span>{{ page_num }}</span></li>
+                                    <li><span>{{ page_num }}</span></li>
                                 {% else %}
-                                    <li ><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                    <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
@@ -86,7 +65,8 @@
                             {% endif %}
                         </li>
                     </ul>
-                    <p>共有{{ page_of_blogs.paginator.count }}篇博客，
+                    <p> 当前月份为【{{ blog_with_date }}】,
+                        共有{{ page_of_blogs.paginator.count }}篇博客，
                         当前{{ page_of_blogs.number }}页,
                         共{{ page_of_blogs.paginator.num_pages }}页
                     </p>
@@ -101,12 +81,12 @@
                     </div>
                     <div class="panel-body">
                         <ul class="blog-types">
-                            {% for blog_type in type_page %}
+                            {% for blog_type in blog_types %}
                                 <li><a href="{% url 'get_type' blog_type.pk %}">
                                     {{ blog_type.type_name }}
                                 </a></li>
                             {% empty %}
-                                <li>暂无分类,敬请期待</li>
+                                <li>暂无博客,敬请期待</li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -130,6 +110,7 @@
             </div>
         </div>
     </div>
+
 
 {% endblock %}
 
