@@ -23,7 +23,8 @@
                 <div class="panel panel-default">
                     {#                不分页显示方式#}
                     {#                  <div class="panel-heading">博客列表(共有{{ home_page|length }}篇博客)</div>#}
-                    <div class="panel-heading">博客列表</div>
+                    {# 增加一个块，用来根据不同页面进行命名 #}
+                    <div class="panel-heading">{% block blog_list_title %}博客列表{% endblock %}</div>
                     {#                分页显示方式#}
 
                     <div class="panel-body">
