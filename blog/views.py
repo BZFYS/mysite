@@ -1,10 +1,13 @@
 # -*- coding:utf8 -*-
 
 
-from django.shortcuts import render_to_response,get_object_or_404
-from blog.models import *
-from django.core.paginator import Paginator
 from django.conf import settings
+from django.core.paginator import Paginator
+from django.db.models import Count
+from django.shortcuts import render_to_response, get_object_or_404
+
+from blog.models import *
+
 
 # # 每页博客显示数量
 # each_page_blogs_number = 10
@@ -36,11 +39,24 @@ def get_blog_list_common_data(request, blogs_list_all):
         page_range.insert(0, 1)
     if page_range[-1] != paginator.num_pages:
         page_range.append(paginator.num_pages)
+
+    # # 获取对应博客分类数量
+    # BlogType.objects.annotate(blog_count = Count("blog"))
+
+    # 获取博客日期对应的博客数量
+    blog_dates = Blog.objects.datetimes('create_time', "month", order='DESC', tzinfo=None)
+    blog_date_dict = {}
+    for blog_date in blog_dates:
+        blog_count = Blog.objects.filter(create_time__year=blog_date.year, create_time__month=blog_date.month,
+                                         is_delete=False).count()
+        blog_date_dict[blog_date] = blog_count
+
     content = {}
     content['page_of_blogs'] = page_of_blogs
-    content['blog_types'] = BlogType.objects.all()
+    # blog_count 任意写，blog代表相关联系统的小写名（库名），或者在对应（blog的blog_type）外键处添加：related_name=blog_blog ,这里也写blog_blog即可
+    content['type_page'] = BlogType.objects.annotate(blog_count=Count("blog"))
     content['page_range'] = page_range
-    content['blog_dates'] = Blog.objects.datetimes('create_time', "month", order='DESC', tzinfo=None)
+    content['blog_dates'] = blog_date_dict
     return content
 
 
