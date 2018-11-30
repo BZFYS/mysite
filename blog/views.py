@@ -49,8 +49,13 @@ def home(request):
 
 #选择具体博客
 def get_page(request,blog_page):
-    page = get_object_or_404(Blog,pk=blog_page,is_delete=False)
+    print(blog_page)
     content = {}
+    page = get_object_or_404(Blog, pk=blog_page, is_delete=False)
+    previous_blog = Blog.objects.filter(create_time__gt=page.create_time, is_delete=False).last()
+    print(previous_blog)
+    content['previous_blog'] = previous_blog
+    content['next_blog'] = Blog.objects.filter(create_time__lt=page.create_time, is_delete=False).first()
     content['page'] = page
     return render_to_response('page.html',content)
 
@@ -94,3 +99,5 @@ def get_type(request,blog_type):
 
 def index(request):
     return render_to_response('index.html')
+
+# def blog_with_date(request,year,mouth):

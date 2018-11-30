@@ -24,9 +24,9 @@ class Blog(models.Model):
     # 是否删除
     is_delete = models.BooleanField(default=False)
     # 创建时间
-    create_time = models.DateField(auto_now_add=True)
+    create_time = models.DateTimeField(auto_now_add=True)
     # 更新时间
-    update_time = models.DateField(auto_now=True)
+    update_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "<Blog: %s>" % self.title

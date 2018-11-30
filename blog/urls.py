@@ -20,5 +20,6 @@ from .views import home,get_page,get_type
 urlpatterns = [
     path('', home,name='home'),
     path('<int:blog_page>',get_page,name='get_page'),
-    path('type/<str:blog_type>',get_type,name='get_type')
+    path('type/<str:blog_type>', get_type, name='get_type'),
+    # path('date/<int:year>/<int:mount>',blog_with_date,name='blog_with_date')
 ]

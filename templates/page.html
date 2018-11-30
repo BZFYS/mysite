@@ -7,7 +7,20 @@
     <p>创建时间:{{ page.create_time }}</p>
     <p>修改时间:{{ page.update_time }}</p>
     <p>作者:{{ page.auth }}</p>
-    <p>博客类型：<a href={% url 'get_type' page.blog_type_id %}>{{ page.blog_type_id }}</a></p>
+    <p>博客类型：<a href={% url 'get_type' page.blog_type_id %}>{{ page.blog_type }}</a></p>
     {{ page.content }}
+    <div class="blog-more">
+        {% if previous_blog.pk %}
+            <p>上一篇:<a href="{% url 'get_page' previous_blog.pk %}">{{ previous_blog.title }}</a>
+            </p>
+        {% else %}
+            <p>上一篇：第一页了</p>
+        {% endif %}
+        {% if next_blog.pk %}
+            <p>下一篇:<a href="{% url 'get_page' next_blog.pk %}">{{ next_blog.title }}</a></p>
+        {% else %}
+            <p>下一篇：最后一页了</p>
+        {% endif %}
+    </div>
 {% endblock %}
 

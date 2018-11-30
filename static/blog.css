@@ -21,3 +21,8 @@ div.blog h3{
 div.panel-body p.blog-info{
     margin-bottom: 0em;
 }
+
+/*上边距*/
+div.blog-more {
+    margin-top: 1em;
+}
