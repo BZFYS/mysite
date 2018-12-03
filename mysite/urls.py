@@ -14,8 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 # 下面的方式只有开发时候可以使用
-# from django.conf import settings
-# from django.conf.urls.static import static
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
@@ -25,8 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/',include(urls)),
     path('', views.index, name='index'),
-    # path('ckeditor', include('ckeditor_uploader.urls'))
+    path('ckeditor', include('ckeditor_uploader.urls'))
 ]
 
 # # 下面的方式只有开发时候可以使用
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_URL)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_URL)

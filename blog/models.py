@@ -1,4 +1,4 @@
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -19,7 +19,7 @@ class Blog(models.Model):
     # 内容
     # content = models.TextField()
     # 增加富文本
-    content = RichTextField()
+    content = RichTextUploadingField()
     # # 博客类型（外键），删除时，不删除关联，to_field代表关联哪个列
     # blog_type = models.ForeignKey(BlogType,on_delete=models.DO_NOTHING,to_field='type_name')
 
