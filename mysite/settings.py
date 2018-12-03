@@ -151,6 +151,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # 配置上传路径
 CKEDITOR_UPLOAD_PATH = 'upload/'
 
-
 #自定义参数
 EACH_PAGE_BLOGS_NUMBER = 10
