@@ -1,6 +1,7 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.fields import exceptions
 
 
 #博客类型表
@@ -35,9 +36,13 @@ class Blog(models.Model):
     # 更新时间
     update_time = models.DateTimeField(auto_now=True)
 
-    # 增加readnum的read_num字段
-    def read_num(self):
-        return self.readnum.read_num
+    # 增加readnum的read_num字段,如果发现异常，就返回0
+    def get_read_num(self):
+        try:
+            return self.readnum.read_num
+        # 如果对象不存在
+        except exceptions.ObjectDoesNotExist:
+            return 0
 
     def __str__(self):
         return "<Blog: %s>" % self.title
