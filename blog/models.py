@@ -1,5 +1,7 @@
-from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
+from django.db import models
+
 
 #博客类型表
 class BlogType(models.Model):
@@ -15,9 +17,12 @@ class Blog(models.Model):
     # 标题 最大长度50
     title = models.CharField(max_length=50)
     # 内容
-    content = models.TextField()
+    # content = models.TextField()
+    # 增加富文本
+    content = RichTextUploadingField()
     # # 博客类型（外键），删除时，不删除关联，to_field代表关联哪个列
     # blog_type = models.ForeignKey(BlogType,on_delete=models.DO_NOTHING,to_field='type_name')
+
     blog_type = models.ForeignKey(BlogType, on_delete=models.DO_NOTHING)
     # 用户
     auth = models.ForeignKey(User,on_delete=models.DO_NOTHING)
