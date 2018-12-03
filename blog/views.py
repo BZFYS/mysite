@@ -71,15 +71,19 @@ def home(request):
 def get_page(request,blog_page):
 
     page = get_object_or_404(Blog, pk=blog_page, is_delete=False)
-    # 增加页面访问次数统计
-    page.readed_num += 1
-    page.save()
+    # 增加页面访问次数统计,判断用户是否有这个cookie，如果没有，则计数
+    if not request.COOKIES.get('blog_%s_readed' % blog_page):
+        page.readed_num += 1
+        page.save()
     previous_blog = Blog.objects.filter(create_time__gt=page.create_time, is_delete=False).last()
     content = {}
     content['previous_blog'] = previous_blog
     content['next_blog'] = Blog.objects.filter(create_time__lt=page.create_time, is_delete=False).first()
     content['page'] = page
-    return render_to_response('page.html',content)
+    response = render_to_response('page.html', content)
+    # 设置cookie，有效时间为60秒
+    response.set_cookie('blog_%s_readed' % blog_page, 'True', max_age=60)
+    return response
 
 #根据类型查找博客
 def get_type(request,blog_type):
