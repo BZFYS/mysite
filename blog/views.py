@@ -69,11 +69,13 @@ def home(request):
 
 #选择具体博客
 def get_page(request,blog_page):
-    print(blog_page)
-    content = {}
+
     page = get_object_or_404(Blog, pk=blog_page, is_delete=False)
+    # 增加页面访问次数统计
+    page.readed_num += 1
+    page.save()
     previous_blog = Blog.objects.filter(create_time__gt=page.create_time, is_delete=False).last()
-    print(previous_blog)
+    content = {}
     content['previous_blog'] = previous_blog
     content['next_blog'] = Blog.objects.filter(create_time__lt=page.create_time, is_delete=False).first()
     content['page'] = page

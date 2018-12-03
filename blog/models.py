@@ -26,6 +26,8 @@ class Blog(models.Model):
     blog_type = models.ForeignKey(BlogType, on_delete=models.DO_NOTHING)
     # 用户
     auth = models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    # 被访问次数
+    readed_num = models.IntegerField(default=0)
     # 是否删除
     is_delete = models.BooleanField(default=False)
     # 创建时间

@@ -38,6 +38,7 @@
                                 <span class="glyphicon glyphicon-tag"></span><a
                                     href="{% url 'get_type' content.blog_type_id %}"> {{ content.blog_type }}</a>
                                 <span class="glyphicon glyphicon-time"></span> {{ content.update_time }}
+                                阅读({{ content.readed_num }})
                             </p>
                             {# 吧标签对去掉#}
                             <font color="#a9a9a9">{{ content.content|striptags|truncatechars:30 }}</font>
