@@ -6,7 +6,7 @@
     <h1>{{ page.title }}</h1>
     <p>创建时间:{{ page.create_time }}</p>
     <p>修改时间:{{ page.update_time }}</p>
-    <p>阅读次数：{{ page.readed_num }}</p>
+    <p>阅读次数：{{ page.read_num }}</p>
     <p>作者:{{ page.auth }}</p>
     <p>博客类型：<a href={% url 'get_type' page.blog_type_id %}>{{ page.blog_type }}</a></p>
     {#    safe过滤器代表安全的#}

@@ -27,7 +27,7 @@ class Blog(models.Model):
     # 用户
     auth = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     # 被访问次数
-    readed_num = models.IntegerField(default=0)
+    # read_num = models.IntegerField(default=0)
     # 是否删除
     is_delete = models.BooleanField(default=False)
     # 创建时间
@@ -35,9 +35,21 @@ class Blog(models.Model):
     # 更新时间
     update_time = models.DateTimeField(auto_now=True)
 
+    # 增加readnum的read_num字段
+    def read_num(self):
+        return self.readnum.read_num
+
     def __str__(self):
         return "<Blog: %s>" % self.title
+
 
     #定义个排序规则,否则会有警告,改完需要重新同步数据库
     class Meta:
         ordering = ['-create_time']
+
+
+# 增加统计表
+class ReadNum(models.Model):
+    read_num = models.IntegerField(default=0)
+    # 1对1的方式进行关联
+    blog = models.OneToOneField(Blog, on_delete=models.DO_NOTHING)
