@@ -141,15 +141,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static'),
 ]
-
-# media配置，
-MEDIA_URL = '/media/'
-# 相对于media保存的位置
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# 配置ckeditor
-# 配置上传路径
-CKEDITOR_UPLOAD_PATH = 'upload/'
+#
+# # media配置，
+# MEDIA_URL = '/media/'
+# # 相对于media保存的位置
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#
+# # 配置ckeditor
+# # 配置上传路径
+# CKEDITOR_UPLOAD_PATH = 'upload/'
 
 
 #自定义参数
