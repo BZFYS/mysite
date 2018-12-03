@@ -8,7 +8,8 @@
     <p>修改时间:{{ page.update_time }}</p>
     <p>作者:{{ page.auth }}</p>
     <p>博客类型：<a href={% url 'get_type' page.blog_type_id %}>{{ page.blog_type }}</a></p>
-    {{ page.content }}
+    {#    safe过滤器代表安全的#}
+    {{ page.content|safe }}
     <div class="blog-more">
         {% if previous_blog.pk %}
             <p>上一篇:<a href="{% url 'get_page' previous_blog.pk %}">{{ previous_blog.title }}</a>

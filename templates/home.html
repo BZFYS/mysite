@@ -39,7 +39,8 @@
                                     href="{% url 'get_type' content.blog_type_id %}"> {{ content.blog_type }}</a>
                                 <span class="glyphicon glyphicon-time"></span> {{ content.update_time }}
                             </p>
-                            <font color="#a9a9a9">{{ content.content|truncatechars:30 }}</font>
+                            {# 吧标签对去掉#}
+                            <font color="#a9a9a9">{{ content.content|striptags|truncatechars:30 }}</font>
                             <hr>
                             <!--这个相当于else，当取不到数据则显示下面的内容-->
                         {% empty %}
