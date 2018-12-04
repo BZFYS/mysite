@@ -3,13 +3,57 @@
 {% extends 'base.html' %}
 <!--title块-->
 {% block title %}
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
     您好
+
 {% endblock %}
 <!--设置导航栏为选中-->
 {% block nav_home_active %}active{% endblock %}
 <!--content块-->
 {% block content %}
-    <h3 class="home-content">你好</h3>
+    {#    <h3 class="home-content">你好</h3>#}
+    {#    <p>{{ read_nums }}</p>#}
+    <!-- 图表容器 DOM -->
+    <div id="container"></div>
+
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script>
+        // 图表配置
+        var options = {
+            chart: {
+                type: 'line'                          //指定图表的类型，默认是折线图（line）
+            },
+            title: {
+                text: "欢迎访问我的网站"           // 标题
+            },
+            xAxis: {
+                categories: {{ dates|safe }},  // x 轴分类,safe是用来使用安全模式让他自然转译
+                tickmarkPlacement: 'on',
+            },
+            yAxis: {
+                title: {
+                    text: null               // y 轴标题
+                },
+                labels: {enabled: false},
+                gridLineDashStyle: 'Dash',
+            },
+            series: [{                              // 数据列
+                name: '阅读量',                        // 数据列名
+                data: {{ read_nums }}                    // 数据
+            }],
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {enabled: false},            //关闭图例
+            credits: {enabled: false}    //删除版权信息
+        };
+        // 图表初始化函数
+        var chart = Highcharts.chart('container', options);
+    </script>
 {% endblock %}
 
 

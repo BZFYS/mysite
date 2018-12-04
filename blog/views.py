@@ -7,6 +7,7 @@ from django.db.models import Count
 from django.shortcuts import render_to_response, get_object_or_404
 
 from blog.models import *
+from read_statistics.utils import get_seven_days_read_data
 from read_statistics.utils import read_statistics_once_read
 
 
@@ -97,7 +98,12 @@ def get_type(request,blog_type):
 
 # 首页
 def index(request):
-    return render_to_response('index.html')
+    blog_content_type = ContentType.objects.get_for_model(Blog)
+    dates, read_nums = get_seven_days_read_data(blog_content_type)
+    content = {}
+    content['dates'] = dates
+    content['read_nums'] = read_nums
+    return render_to_response('index.html', content)
 
 
 # 根据日期查询

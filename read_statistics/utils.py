@@ -4,9 +4,13 @@
 # @Email   : sjztianke@hotmail.com
 # @File    : utils.py
 # @Software: PyCharm
-from django.contrib.contenttypes.models import ContentType
+import datetime
 
-from read_statistics.models import ReadNum
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Sum
+from django.utils import timezone
+
+from read_statistics.models import ReadNum, ReadDetail
 
 
 # 增加页面访问次数统计,判断用户是否有这个cookie，如果没有，则计数
@@ -24,5 +28,29 @@ def read_statistics_once_read(request, obj):
         # 技术+1
         readnum.read_num += 1
         readnum.save()
+    date = timezone.now()
+    if ReadDetail.objects.filter(content_type=ct, object_id=obj.pk, date=date).count():
+        readDetail = ReadDetail.objects.get(content_type=ct, object_id=obj.pk, date=date)
+    else:
+        readDetail = ReadDetail(content_type=ct, object_id=obj.pk, date=date)
+    readDetail.read_num += 1
+    readDetail.save()
     # 返回key 用来写cookie
     return key
+
+
+# 用于统计一周内访问量
+def get_seven_days_read_data(content_type):
+    today = timezone.now().date()
+    dates = []
+    read_nums = []
+    for i in range(6, -1, -1):
+        date = today - datetime.timedelta(days=i)
+        dates.append(date.strftime('%m/%d'))
+        read_details = ReadDetail.objects.filter(content_type=content_type, date=date)
+        # 对read_num 进行求和计算,返回一个字典
+        result = read_details.aggregate(read_num_sum=Sum('read_num'))
+        # 将对应的value放到一个列表
+        read_nums.append(result['read_num_sum'] or 0)
+    # 返回列表
+    return dates, read_nums

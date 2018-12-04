@@ -9,3 +9,11 @@ body {
 ul {
     list-style-type: none !important;
 }
+
+div#container {
+    margin: 0 auto;
+    height: 20em;
+    min-width: 20em;
+    max-width: 30em;
+
+}
