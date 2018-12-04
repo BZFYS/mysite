@@ -7,6 +7,7 @@ from django.db.models import Count
 from django.shortcuts import render_to_response, get_object_or_404
 
 from blog.models import *
+from read_statistics.utils import read_statistics_once_read
 
 
 # # 每页博客显示数量
@@ -71,18 +72,11 @@ def home(request):
 def get_page(request,blog_page):
 
     page = get_object_or_404(Blog, pk=blog_page, is_delete=False)
-    # 增加页面访问次数统计,判断用户是否有这个cookie，如果没有，则计数
-    if not request.COOKIES.get('blog_%s_readed' % blog_page):
-        ct = ContentType.objects.get_for_model(Blog)
-        if ReadNum.objects.filter(content_type=ct, object_id=page.pk).count():
-            # 如果存在记录
-            readnum = ReadNum.objects.get(content_type=ct, object_id=page.pk)
-        else:
-            # 不存在对应记录
-            readnum = ReadNum(content_type=ct, object_id=page.pk)
-        # 技术+1
-        readnum.read_num += 1
-        readnum.save()
+    # 阅读标记
+    # 阅读标记
+    read_cookie_key = read_statistics_once_read(request, page)
+
+
     previous_blog = Blog.objects.filter(create_time__gt=page.create_time, is_delete=False).last()
     content = {}
     content['previous_blog'] = previous_blog
@@ -90,7 +84,7 @@ def get_page(request,blog_page):
     content['page'] = page
     response = render_to_response('page.html', content)
     # 设置cookie，有效时间为60秒
-    response.set_cookie('blog_%s_readed' % blog_page, 'True', max_age=60)
+    response.set_cookie(read_cookie_key, 'True', max_age=60)
     return response
 
 #根据类型查找博客

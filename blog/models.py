@@ -2,9 +2,8 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models.fields import exceptions
 
-from read_statistics.models import ReadNum
+from read_statistics.models import ReadNum, ReadNumExpandMethod
 
 
 #博客类型表
@@ -16,8 +15,8 @@ class BlogType(models.Model):
         return self.type_name
 
 # Create your models here.
-#博客表
-class Blog(models.Model):
+# 博客表,继承read_statistics.models下的计数类
+class Blog(models.Model, ReadNumExpandMethod):
     # 标题 最大长度50
     title = models.CharField(max_length=50)
     # 内容
@@ -47,13 +46,6 @@ class Blog(models.Model):
     #     except exceptions.ObjectDoesNotExist:
     #         return 0
 
-    def get_read_num(self):
-        try:
-            ct = ContentType.objects.get_for_model(Blog)
-            readnum = ReadNum.objects.get(content_type=ct, object_id=self.pk)
-            return readnum.read_num
-        except exceptions.ObjectDoesNotExist:
-            return 0
     def __str__(self):
         return "<Blog: %s>" % self.title
 
