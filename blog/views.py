@@ -73,16 +73,16 @@ def get_page(request,blog_page):
     page = get_object_or_404(Blog, pk=blog_page, is_delete=False)
     # 增加页面访问次数统计,判断用户是否有这个cookie，如果没有，则计数
     if not request.COOKIES.get('blog_%s_readed' % blog_page):
-        if ReadNum.objects.filter(blog=page).count():
+        ct = ContentType.objects.get_for_model(Blog)
+        if ReadNum.objects.filter(content_type=ct, object_id=page.pk).count():
             # 如果存在记录
-            readnum = ReadNum.objects.get(blog=page)
+            readnum = ReadNum.objects.get(content_type=ct, object_id=page.pk)
         else:
             # 不存在对应记录
-            readnum = ReadNum(blog=page)
+            readnum = ReadNum(content_type=ct, object_id=page.pk)
         # 技术+1
         readnum.read_num += 1
         readnum.save()
-
     previous_blog = Blog.objects.filter(create_time__gt=page.create_time, is_delete=False).last()
     content = {}
     content['previous_blog'] = previous_blog

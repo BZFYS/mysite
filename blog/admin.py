@@ -16,7 +16,7 @@ class BlogAdmin(admin.ModelAdmin):
     # readnum是因为有外键关联，
     list_display = ('id', 'blog_type_id', 'title', 'auth', 'get_read_num', 'is_delete', 'create_time', 'update_time')
 
-
-@admin.register(ReadNum)
-class ReadNumAdmin(admin.ModelAdmin):
-    list_display = ('read_num', 'blog')
+#
+# @admin.register(ReadNum)
+# class ReadNumAdmin(admin.ModelAdmin):
+#     list_display = ('read_num', 'blog')

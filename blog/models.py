@@ -1,7 +1,10 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.fields import exceptions
+
+from read_statistics.models import ReadNum
 
 
 #博客类型表
@@ -36,14 +39,21 @@ class Blog(models.Model):
     # 更新时间
     update_time = models.DateTimeField(auto_now=True)
 
-    # 增加readnum的read_num字段,如果发现异常，就返回0
+    # # 增加readnum的read_num字段,如果发现异常，就返回0
+    # def get_read_num(self):
+    #     try:
+    #         return self.readnum.read_num
+    #     # 如果对象不存在
+    #     except exceptions.ObjectDoesNotExist:
+    #         return 0
+
     def get_read_num(self):
         try:
-            return self.readnum.read_num
-        # 如果对象不存在
+            ct = ContentType.objects.get_for_model(Blog)
+            readnum = ReadNum.objects.get(content_type=ct, object_id=self.pk)
+            return readnum.read_num
         except exceptions.ObjectDoesNotExist:
             return 0
-
     def __str__(self):
         return "<Blog: %s>" % self.title
 
@@ -53,8 +63,9 @@ class Blog(models.Model):
         ordering = ['-create_time']
 
 
-# 增加统计表
+'''
 class ReadNum(models.Model):
     read_num = models.IntegerField(default=0)
     # 1对1的方式进行关联
     blog = models.OneToOneField(Blog, on_delete=models.DO_NOTHING)
+    '''
