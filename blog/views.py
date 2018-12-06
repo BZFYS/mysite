@@ -1,10 +1,10 @@
 # -*- coding:utf8 -*-
 
 from django.conf import settings
+from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.shortcuts import render_to_response, get_object_or_404
-from django.utils import timezone
 
 from blog.models import *
 from read_statistics.utils import *
@@ -108,12 +108,24 @@ def get_type(request,blog_type):
 def index(request):
     blog_content_type = ContentType.objects.get_for_model(Blog)
     dates, read_nums = get_seven_days_read_data(blog_content_type)
+
+    # 获取7填热门博客缓存数据
+    # get 缓存
+    hot_data_for_7_days = cache.get('hot_data_for_7_days')
+    # 如果是空则计算
+    if hot_data_for_7_days is None:
+        hot_data_for_7_days = get_7_days_hot_data()
+        # 计算完毕并写入，分贝为key value 超时时间
+        cache.set('hot_data_for_7_days', hot_data_for_7_days, 3600)
+
+
+
     content = {}
     content['dates'] = dates
     content['read_nums'] = read_nums
     content['today_hot_date'] = get_today_hot_date(blog_content_type)
     content['yesterday_hot_date'] = get_yesterday_hot_date(blog_content_type)
-    content['hot_data_for_7_days'] = get_7_days_hot_data()
+    content['hot_data_for_7_days'] = hot_data_for_7_days
     return render_to_response('index.html', content)
 
 

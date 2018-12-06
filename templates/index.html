@@ -1,4 +1,3 @@
-
 <!--启用扩展，引用base.hmtl-->
 {% extends 'base.html' %}
 <!--title块-->
@@ -15,39 +14,42 @@
     {#    <p>{{ read_nums }}</p>#}
     <!-- 图表容器 DOM -->
     <div id="container"></div>
-    <!--今天24小时内的热门文章-->
-    <h3>今天热门博客</h3>
-    <ul>
-        {% for hot_data in today_hot_date %}
-            {#            这里的content_object对应model（read_statistics）下的content_object，通过这个可以直接获取数据库对象，然后通过调用方式显示标题名#}
-            <li>
-                <a href="{% url 'get_page' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})
-            </li>
-        {% empty %}
-            <li>暂时没有热门博客</li>
-        {% endfor %}
-    </ul>
-    <h3>昨天热门博客</h3>
-    <ul>
-        {% for hot_data in yesterday_hot_date %}
-            {#            这里的content_object对应model（read_statistics）下的content_object，通过这个可以直接获取数据库对象，然后通过调用方式显示标题名#}
-            <li>
-                <a href="{% url 'get_page' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})
-            </li>
-        {% empty %}
-            <li>暂时没有热门博客</li>
-        {% endfor %}
-    </ul>
+    <div class="hot-date">
+        <!--今天24小时内的热门文章-->
+        <h3>今天热门博客</h3>
+        <ul>
+            {% for hot_data in today_hot_date %}
+                {#            这里的content_object对应model（read_statistics）下的content_object，通过这个可以直接获取数据库对象，然后通过调用方式显示标题名#}
+                <li>
+                    <a href="{% url 'get_page' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})
+                </li>
+            {% empty %}
+                <li>暂时没有热门博客</li>
+            {% endfor %}
+        </ul>
+        <h3>昨天热门博客</h3>
+        <ul>
+            {% for hot_data in yesterday_hot_date %}
+                {#            这里的content_object对应model（read_statistics）下的content_object，通过这个可以直接获取数据库对象，然后通过调用方式显示标题名#}
+                <li>
+                    <a href="{% url 'get_page' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})
+                </li>
+            {% empty %}
+                <li>暂时没有热门博客</li>
+            {% endfor %}
+        </ul>
 
-    <h3>七天热门博客</h3>
-    <ul>
-        {% for hot_blog in hot_data_for_7_days %}
-            {#            这里的content_object对应model（read_statistics）下的content_object，通过这个可以直接获取数据库对象，然后通过调用方式显示标题名#}
-            <li><a href="{% url 'get_page' hot_blog.id %}">{{ hot_blog.title }}</a>({{ hot_blog.read_num_sum }})</li>
-        {% empty %}
-            <li>暂时没有热门博客</li>
-        {% endfor %}
-    </ul>
+        <h3>七天热门博客</h3>
+        <ul>
+            {% for hot_blog in hot_data_for_7_days %}
+                {#            这里的content_object对应model（read_statistics）下的content_object，通过这个可以直接获取数据库对象，然后通过调用方式显示标题名#}
+                <li><a href="{% url 'get_page' hot_blog.id %}">{{ hot_blog.title }}</a>({{ hot_blog.read_num_sum }})
+                </li>
+            {% empty %}
+                <li>暂时没有热门博客</li>
+            {% endfor %}
+        </ul>
+    </div>
     <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
     <script>
         // 图表配置

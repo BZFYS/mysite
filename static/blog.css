@@ -26,3 +26,8 @@ div.panel-body p.blog-info{
 div.blog-more {
     margin-top: 1em;
 }
+
+div.hot-date {
+    text-align: center;
+    margin-top: 2em;
+}
