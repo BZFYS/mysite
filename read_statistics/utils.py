@@ -54,3 +54,17 @@ def get_seven_days_read_data(content_type):
         read_nums.append(result['read_num_sum'] or 0)
     # 返回列表
     return dates, read_nums
+
+
+# 获取当天阅读数量
+def get_today_hot_date(content_type):
+    today = timezone.now().date()
+    read_details = ReadDetail.objects.filter(content_type=content_type, date=today).order_by('-read_num')
+    return read_details[:3]  # 获取前三条
+
+
+# 获取昨天阅读数量
+def get_yesterday_hot_date(content_type):
+    yesterday = timezone.now().date() - datetime.timedelta(days=1)
+    read_details = ReadDetail.objects.filter(content_type=content_type, date=yesterday).order_by('-read_num')
+    return read_details[:3]  # 获取前三条

@@ -1,18 +1,26 @@
 # -*- coding:utf8 -*-
 
-
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.shortcuts import render_to_response, get_object_or_404
+from django.utils import timezone
 
 from blog.models import *
-from read_statistics.utils import get_seven_days_read_data
-from read_statistics.utils import read_statistics_once_read
+from read_statistics.utils import *
 
 
 # # 每页博客显示数量
 # each_page_blogs_number = 10
+
+# 显示7天内访问量最高的博客
+def get_7_days_hot_data():
+    today = timezone.now().date()
+    date = today - datetime.timedelta(days=7)
+    blogs = Blog.objects.filter(read_details__date__lt=today, read_details__date__gte=date).values('id',
+                                                                                                   'title').annotate(
+        read_num_sum=Sum('read_details__read_num')).order_by('-read_num_sum')
+    return blogs
 
 # 增加一个公用方法，用来重用代码
 def get_blog_list_common_data(request, blogs_list_all):
@@ -103,6 +111,9 @@ def index(request):
     content = {}
     content['dates'] = dates
     content['read_nums'] = read_nums
+    content['today_hot_date'] = get_today_hot_date(blog_content_type)
+    content['yesterday_hot_date'] = get_yesterday_hot_date(blog_content_type)
+    content['hot_data_for_7_days'] = get_7_days_hot_data()
     return render_to_response('index.html', content)
 
 

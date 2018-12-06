@@ -1,9 +1,10 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
-from read_statistics.models import ReadNum, ReadNumExpandMethod
+from read_statistics.models import ReadNum, ReadNumExpandMethod, ReadDetail
 
 
 #博客类型表
@@ -37,6 +38,8 @@ class Blog(models.Model, ReadNumExpandMethod):
     create_time = models.DateTimeField(auto_now_add=True)
     # 更新时间
     update_time = models.DateTimeField(auto_now=True)
+    # 返回关联模型，也就是说从通过这个字段可以返回其他模型里面的跟这个模型有关的对象，这个字段不会创建数据库字段
+    read_details = GenericRelation(ReadDetail)
 
     # # 增加readnum的read_num字段,如果发现异常，就返回0
     # def get_read_num(self):
