@@ -20,12 +20,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 from blog import urls, views
+from comment import views as commentviews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/',include(urls)),
     path('', views.index, name='index'),
-    path('ckeditor', include('ckeditor_uploader.urls'))
+    path('ckeditor', include('ckeditor_uploader.urls')),
+    path('update_comment/', commentviews.update_comment, name='update_comment')
 ]
 
 # # 下面的方式只有开发时候可以使用

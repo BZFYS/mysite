@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'read_statistics',
+    'comment',
 ]
 
 MIDDLEWARE = [
@@ -93,7 +94,7 @@ DATABASES = {
         'HOST': '127.0.0.1',
         #端口
         'PORT': '3306',
-        'OPTIONS': { 'init_command': 'SET sql_mode=STRICT_TRANS_TABLES',},
+        # 'OPTIONS': { 'init_command': 'SET sql_mode=STRICT_TRANS_TABLES',},
 
 
 

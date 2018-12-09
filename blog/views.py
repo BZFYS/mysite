@@ -1,12 +1,16 @@
 # -*- coding:utf8 -*-
 
 from django.conf import settings
+from django.contrib.auth import authenticate, login
+from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import Count
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 
 from blog.models import *
+from comment.models import Comment
 from read_statistics.utils import *
 
 
@@ -84,13 +88,16 @@ def get_page(request,blog_page):
     # 阅读标记
     # 阅读标记
     read_cookie_key = read_statistics_once_read(request, page)
-
+    # 返回评论列表
+    blog_content_type = ContentType.objects.get_for_model(page)
+    comments = Comment.objects.filter(content_type=blog_content_type, object_id=page.pk)
 
     previous_blog = Blog.objects.filter(create_time__gt=page.create_time, is_delete=False).last()
     content = {}
     content['previous_blog'] = previous_blog
     content['next_blog'] = Blog.objects.filter(create_time__lt=page.create_time, is_delete=False).first()
     content['page'] = page
+    content['comments'] = comments
     response = render(request, 'page.html', content)
     # 设置cookie，有效时间为60秒
     response.set_cookie(read_cookie_key, 'True', max_age=60)
@@ -136,3 +143,18 @@ def blog_with_date(request, year, month):
     content = get_blog_list_common_data(request, blogs_list_all)
     content['blog_with_date'] = "%s年%s月" % (year, month)
     return render(request, 'blogs_with_date.html', content)
+
+
+# 登录
+def login_blog(request):
+    username = request.POST.get('username', '')
+    password = request.POST.get('username', '')
+    user = authenticate(request, username=username, password=password)
+    # 获取数据头中带回来的页面，如果没有，则通过反向解析解析到home
+    referer = request.META.get('HTTP_REFERER', reverse('home'))
+    if user is not None:
+        login(request, user)
+        return redirect(referer)
+    else:
+        # Return an 'invalid login' error message.
+        return render(request, 'error.html', {'massage': '用户名或密码不正确'})
