@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.paginator import Paginator
 from django.db.models import Count
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 
 from blog.models import *
 from read_statistics.utils import *
@@ -75,7 +75,7 @@ def home(request):
 
     blogs_list_all = Blog.objects.filter(is_delete=False)
     content = get_blog_list_common_data(request, blogs_list_all)
-    return render_to_response('home.html',content)
+    return render(request, 'home.html', content)
 
 #选择具体博客
 def get_page(request,blog_page):
@@ -91,7 +91,7 @@ def get_page(request,blog_page):
     content['previous_blog'] = previous_blog
     content['next_blog'] = Blog.objects.filter(create_time__lt=page.create_time, is_delete=False).first()
     content['page'] = page
-    response = render_to_response('page.html', content)
+    response = render(request, 'page.html', content)
     # 设置cookie，有效时间为60秒
     response.set_cookie(read_cookie_key, 'True', max_age=60)
     return response
@@ -101,7 +101,7 @@ def get_type(request,blog_type):
     type_page = get_object_or_404(BlogType, pk=blog_type)
     blogs_list_all = Blog.objects.filter(blog_type_id=blog_type,is_delete=False)
     content = get_blog_list_common_data(request, blogs_list_all)
-    return render_to_response('type_page.html',content)
+    return render(request, 'type_page.html', content)
 
 
 # 首页
@@ -126,7 +126,7 @@ def index(request):
     content['today_hot_date'] = get_today_hot_date(blog_content_type)
     content['yesterday_hot_date'] = get_yesterday_hot_date(blog_content_type)
     content['hot_data_for_7_days'] = hot_data_for_7_days
-    return render_to_response('index.html', content)
+    return render(request, 'index.html', content)
 
 
 # 根据日期查询
@@ -135,4 +135,4 @@ def blog_with_date(request, year, month):
     blogs_list_all = Blog.objects.filter(create_time__year=year, create_time__month=month, is_delete=False)
     content = get_blog_list_common_data(request, blogs_list_all)
     content['blog_with_date'] = "%s年%s月" % (year, month)
-    return render_to_response('blogs_with_date.html', content)
+    return render(request, 'blogs_with_date.html', content)

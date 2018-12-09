@@ -88,11 +88,11 @@ DATABASES = {
         #用户名
         'USER': 'tianke',
         #密码
-        'PASSWORD': 'tainke',
+        'PASSWORD': 'tianke',
         #服务器
-        'HOST': '192.168.10.70',
+        'HOST': '127.0.0.1',
         #端口
-        'PORT': '6033',
+        'PORT': '3306',
         'OPTIONS': { 'init_command': 'SET sql_mode=STRICT_TRANS_TABLES',},
 
 
@@ -131,7 +131,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
